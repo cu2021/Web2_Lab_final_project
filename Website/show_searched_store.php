@@ -11,7 +11,9 @@ $result1 = mysqli_query($connection, $query1);
 
 <body>
     <?php
+    //header
     include_once "partial/header.php";
+    //navbar
     include_once "partial/nav.php";
     ?>
 

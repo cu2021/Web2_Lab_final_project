@@ -59,6 +59,10 @@
                         <li><a class="menu-item" href="add_store.php" data-i18n="nav.templates.horz.classic">Add New Store</a>
                         </li>
                     </ul>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="stores_rating.php" data-i18n="nav.templates.horz.classic">Show Stores' Ratings</a>
+                        </li>
+                    </ul>
 
                 </ul>
             </li>

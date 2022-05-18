@@ -42,9 +42,13 @@ $result1 = mysqli_query($connection, $query1);
 							<div class="product-label">
 								<span class="sale">NEW</span>
 							</div>
-						</div>
+						</div>';
+                        $query = "SELECT * from categories where id=" . $store['category_id'];
+                        $result = mysqli_query($connection, $query);
+                        $category = mysqli_fetch_assoc($result);
+                        echo '
 						<div class="product-body">
-							<p class="product-category">' . $category . '</p>
+							<p class="product-category">' . $category['name'] . '</p>
 							<h3 class="product-name"><a href="show_stores.php?category_id=' . $store["category_id"] . '">' . $store["name"] . '</a></h3>
 							
 							

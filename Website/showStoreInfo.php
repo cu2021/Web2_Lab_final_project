@@ -57,7 +57,9 @@ include_once "partial/head.php";
                 <div class="col-md-5 col-md-push-1">
                     <div id="product-main-img">
                         <div class="product-preview">
-                            <img src="./img/product01.png" alt="">
+                            <?php
+                            echo '<img src="http://localhost/iug1/Final%20Project/Dashboard/uploads/images/'.$store["image"] . '"alt="">';
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -143,7 +145,7 @@ include_once "partial/head.php";
                                     <div class="col-md-3" style="margin: 0% 5%;">
                                         <div id="rating">
                                             <div class="rating-avg">
-                                                <span><?php printf("%.1f",$average)  ?></span>
+                                                <span><?php printf("%.1f", $average)  ?></span>
                                                 <div class="rating-stars">
                                                     <?php
                                                     $all = 5;

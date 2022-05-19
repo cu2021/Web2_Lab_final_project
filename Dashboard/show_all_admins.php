@@ -64,10 +64,13 @@ include "partial/header.php";
                                             </thead>
                                             <tbody>
                                                 <?php
+                                                //database connection
                                                 include_once "partial/DB_CONNECTION.php";
+                                                //defining the important values required for the bagination
                                                 $limit = 3;
                                                 $page = $_GET['page'] ?? 1;
                                                 $offset = ($page - 1) * $limit;
+                                                //selecting the selected admins
                                                 $query9 = "select * from admins limit $limit offset $offset";
 
                                                 $result9 = mysqli_query($connection, $query9);
@@ -78,6 +81,7 @@ include "partial/header.php";
                                                         if ($status1 == 1) {
                                                             $status = "<span class='badge badge-success'>Active</span>";
                                                             if (strcmp($row9['email'], $email) == 0) {
+                                                                //disabling the update status and delete buttons from the logged in accouunt
                                                                 $statusBtnChange = '<form action="updateAdminStatus.php" class="s_form" id="form" method="POST">
                                                                                                 <input type="hidden" name="id" value="' . $row9['id'] . '"> 
                                                                                                 <input type="hidden" name="newStatus" value="0">
@@ -140,6 +144,7 @@ include "partial/header.php";
                         <div class="row">
                             <div class="col-12">
                                 <?php
+                                //baagination commands
                                 $query = "SELECT count(id) as row_no from admins";
                                 $result = mysqli_query($connection, $query);
                                 $row = mysqli_fetch_assoc($result);

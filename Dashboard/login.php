@@ -1,7 +1,9 @@
 <?php
 include_once "partial/DB_CONNECTION.php";
+//for being sure there are no fails or errors
 $errors = [];
 $success = false;
+//vlaidation of email and passwrod fields
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $email = $_POST['email'];
   $password = md5($_POST['password']);
@@ -16,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (count($errors) > 0) {
     $errors['general_error'] = "Please Fix All Errors";
   } else {
+    //vlaidation of email and passwrod of the user to be considered in or out
     $query1 = "SELECT * from admins where email='$email' AND password='$password'";
     $result1 = mysqli_query($connection, $query1);
 
@@ -24,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $status = $row['status'];
       if ($status == 1) {
         session_start();
+        //if signed in, some important super global variables
         $_SESSION['is_login'] = true;
         $_SESSION['username'] = $row['name'];
         $_SESSION['email'] = $row['email'];
@@ -31,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $errors = [];
         $success = true;
-        header('Location:index.php');
+        header('Location:index.php');//main bage
       } else {
         $errors['general_error'] = "Admin is blocked!";
       }

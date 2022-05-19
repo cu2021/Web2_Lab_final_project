@@ -1,15 +1,19 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
     header('Location:login.php');
 }
+//getting the signed account to prevent him from blocking him self
 $emailUser = $_SESSION['email'];
+//database connection
 include 'partial/DB_connection.php';
+//for being sure there are no fails or errors
 $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    //geting the super global variables
     $name = $_POST['name'];
     $phone_number = $_POST['phone_number'];
     $email = $_POST['email'];
@@ -17,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $address = $_POST['address'];
     $description = $_POST['description'];
 
-
+    //vlaidation of all regarded fields with its convenient name
     if (empty($_POST["name"])) {
         $errors['name_error'] = "Name is required";
     }
@@ -38,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (count($errors) > 0) {
         $errors['general_error'] = "Please fix all errors";
     } else {
+        //save the changes on the database
         if (empty($_POST["password"])) {
             $query = "UPDATE admins 
         SET name='$name',phone_number='$phone_number',email='$email',
@@ -50,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         where id=" . $_GET['id'];
         }
 
-
+        //cheeching the process status
         $result = mysqli_query($connection, $query);
         if ($result) {
             $errors = [];
@@ -61,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+//retrieving the selected store data
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $query1 = "select * from admins where id = $id";
@@ -77,7 +83,9 @@ include "partial/header.php";
 <body class="vertical-layout vertical-menu-modern 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
     <?php
+    //navbar
     include "partial/nav.php";
+    //sidebar
     include "partial/sidebar.php";
     ?>
 
@@ -118,6 +126,8 @@ include "partial/header.php";
                                         </ul>
                                     </div>
                                 </div>
+
+                                //card
                                 <div class="card-content collapse show">
                                     <div class="card-content collapse show">
                                         <div class="card-body">
@@ -127,14 +137,14 @@ include "partial/header.php";
                                             } elseif ($success) {
                                                 echo "<div class='alert alert-success'>Admin Added Successfully</div>";
                                             }
-
-
                                             ?>
+
                                             <form class="form" action="<?php echo $_SERVER['PHP_SELF'] . "?id=" . $_GET['id'] ?>" method="post" enctype="multipart/form-data">
                                                 <div class="form-body">
                                                     <h4 class="form-section"><i class="ft-home"></i>Update Admin
                                                     </h4>
                                                     <div class="row">
+                                                        <!-- name field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="name_ar"> Name </label>
@@ -151,6 +161,8 @@ include "partial/header.php";
 
                                                             </div>
                                                         </div>
+
+                                                        <!-- phone number field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="phone_number"> Phone Number </label>
@@ -170,7 +182,9 @@ include "partial/header.php";
 
 
                                                     </div>
+
                                                     <div class="row">
+                                                        <!-- email field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="email"> Email </label>
@@ -185,6 +199,8 @@ include "partial/header.php";
                                                                 </span>
                                                             </div>
                                                         </div>
+
+                                                        <!-- password field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="password"> Password </label>
@@ -203,6 +219,7 @@ include "partial/header.php";
 
 
                                                     <div class=" row">
+                                                        <!-- address field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="address"> Address </label>
@@ -217,6 +234,8 @@ include "partial/header.php";
                                                                 </span>
                                                             </div>
                                                         </div>
+
+                                                        <!-- description field -->
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="description"> Description </label>
@@ -234,6 +253,7 @@ include "partial/header.php";
 
 
                                                     </div>
+                                                    <!-- status section -->
                                                     <div class="row">
 
                                                         <div class="form-group mt-1 col-lg-6">
@@ -251,7 +271,7 @@ include "partial/header.php";
 
 
 
-
+                                                <!-- buttons of control -->
                                                 <div class="form-actions">
                                                     <button type="button" class="btn btn-warning mr-1" onclick="history.back();">
                                                         <i class="ft-x"></i> Back
@@ -260,6 +280,8 @@ include "partial/header.php";
                                                         <i class="la la-check-square-o"></i> Update
                                                     </button>
                                                 </div>
+
+
                                             </form>
                                         </div>
                                     </div>

@@ -1,14 +1,17 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
     header('Location:login.php');
 }
+//database connection
 include 'partial/DB_connection.php';
+//for being sure there are no fails or errors
 $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    //geting the super global variables
     $name = strtoupper($_POST['name']);
     $description = $_POST['description'];
     $address = $_POST['address'];
@@ -16,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $file_name = $_FILES['image']['name'];
     $category_id = $_POST['category_id'];
 
-
+//vlaidation of all regarded fields with its convenient name
     if (empty($name)) {
         $errors['name'] = "Name is required";
     }
@@ -38,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (count($errors) > 0) {
         $errors['general_error'] = "please fix all errors";
     } else {
+        //image important commands
         $file_name = $_FILES['image']['name'];
         $file_size = $_FILES['image']['size'];
         $file_type = $_FILES['image']['type'];
@@ -47,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $upload_path = 'uploads/images/' . $file_new_name;
         move_uploaded_file($file_tmp_name, $upload_path);
-
+        //if no failures add into database
         $query = "INSERT INTO stores (name,description,address,phone,image,category_id)
         VALUES('$name','$description','$address','$phone','$file_new_name',$category_id)";
         $result = mysqli_query($connection, $query);

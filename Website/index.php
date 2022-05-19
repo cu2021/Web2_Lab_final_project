@@ -4,7 +4,9 @@
 
 <body>
 	<?php
+	// header section
 	include_once "partial/header.php";
+	// navbar
 	include_once "partial/nav.php";
 	?>
 
@@ -14,11 +16,14 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
-				<!-- shop -->
+				<!-- category -->
 				<?php
+				//database connection
 				include_once "../Dashboard/partial/DB_CONNECTION.php";
+				//retrieving all categories
 				$query = "SELECT * from categories";
 				$result = mysqli_query($connection, $query);
+				//showing the names of categories
 				while ($row = mysqli_fetch_assoc($result)) {
 					
 					echo '<div class="col-md-4 col-xs-6">
@@ -36,7 +41,7 @@
 
 				?>
 
-				<!-- /shop -->
+				<!-- /category -->
 
 
 

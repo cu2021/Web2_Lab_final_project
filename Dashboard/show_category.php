@@ -1,4 +1,5 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
     header('Location:login.php');
@@ -58,12 +59,14 @@ include "partial/header.php";
                                                                             </thead>
                                                                             <tbody>
                                                                                 <?php
+                                                                                //connection on database
                                                                                 include_once "partial/DB_CONNECTION.php";
+                                                                                //pagination settings
                                                                                 $limit = 3;
                                                                                 $page = $_GET['page'] ?? 1;
                                                                                 $offset = ($page - 1) * $limit;
+                                                                                //select query
                                                                                 $query = "select * from categories limit $limit offset $offset";
-
                                                                                 $result = mysqli_query($connection, $query);
                                                                                 if (mysqli_num_rows($result) > 0) {
                                                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -108,6 +111,7 @@ include "partial/header.php";
                         </div>
                     </div>
                 </div>
+                <!--Start of pagination -->
                 <div class="justify-content-center d-flex">
 
 
@@ -128,8 +132,10 @@ include "partial/header.php";
 
                             ?>
                         </div>
+
                     </div>
                 </div>
+                <!-- end of pagination -->
             </div>
 
         </div>
@@ -142,7 +148,7 @@ include "partial/header.php";
     <script>
         $('.delete-btn').click(function() {
             var result = confirm('Are You Sure !!!');
-            
+
         });
     </script>
 </body>

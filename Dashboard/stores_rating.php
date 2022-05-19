@@ -1,4 +1,5 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
     header('Location:login.php');
@@ -55,15 +56,19 @@ include "partial/header.php";
                                                                             </thead>
                                                                             <tbody>
                                                                                 <?php
+                                                                                //database connection
                                                                                 include_once "partial/DB_CONNECTION.php";
+                                                                                //pagination settings
                                                                                 $limit = 3;
                                                                                 $page = $_GET['page'] ?? 1;
                                                                                 $offset = ($page - 1) * $limit;
+                                                                                //select query
                                                                                 $query = "select * from stores limit $limit offset $offset";
 
                                                                                 $result = mysqli_query($connection, $query);
                                                                                 if (mysqli_num_rows($result) > 0) {
                                                                                     while ($row = mysqli_fetch_assoc($result)) {
+                                                                                        //retieving all ratings of the selected store
                                                                                         $query7 = "SELECT * from rating where store_id = '" . $row['id'] . "'";
                                                                                         $result7 = mysqli_query($connection, $query7);
                                                                                         $ratings = [];

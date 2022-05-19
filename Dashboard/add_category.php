@@ -1,17 +1,22 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
-  header('Location:login.php');
+    header('Location:login.php');
 }
+//database connection
 include "partial/DB_CONNECTION.php";
+//for being sure there are no fails or errors
 $errors = [];
 $success = false;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //geting the super global variables
     $name = $_POST['c_name'];
     $description = $_POST['c_description'];
 
+    //vlaidation of all regarded fields with its convenient name
     if (empty($name)) {
         $errors['name_error'] = "Name is required, please fill it";
     }
@@ -23,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (count($errors) > 0) {
         $errors['general_error'] = "please fix all errors";
     } else {
+        //if no failures add into database
         $query = "INSERT INTO categories (name,description)
     VALUES('$name','$description')";
         $result = mysqli_query($connection, $query);

@@ -1,6 +1,9 @@
 <?php
+//database connection
 include_once "../Dashboard/partial/DB_CONNECTION.php";
+//getting the super global variable store name
 $storeName = strtoupper($_GET['name']);
+//searching in database about the names like the name which is comming from super global variable
 $query1 = "SELECT * from stores where name like '$storeName%'";
 $result1 = mysqli_query($connection, $query1);
 ?>
@@ -29,10 +32,11 @@ $result1 = mysqli_query($connection, $query1);
                         <h3 class="title">Related Stores</h3>
                     </div>
                 </div>
-                <!-- product -->
+                <!-- store -->
 
                 <?php
                 if (mysqli_num_rows($result1) > 0) {
+                    //showing all stores found in the query above
                     while ($store = mysqli_fetch_assoc($result1)) {
                         $store_id = $store['id'];
 
@@ -45,6 +49,7 @@ $result1 = mysqli_query($connection, $query1);
 								<span class="sale">NEW</span>
 							</div>
 						</div>';
+                        //geting the store's category name
                         $query = "SELECT * from categories where id=" . $store['category_id'];
                         $result = mysqli_query($connection, $query);
                         $category = mysqli_fetch_assoc($result);
@@ -75,7 +80,7 @@ $result1 = mysqli_query($connection, $query1);
 
                 ?>
 
-                <!-- /product -->
+                <!-- /store -->
 
 
 

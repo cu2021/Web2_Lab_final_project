@@ -1,26 +1,35 @@
 <?php
+//database connection
 include_once "../Dashboard/partial/DB_CONNECTION.php";
+//geeting the store id from url
 $storeId = strtoupper($_GET['id']);
+//retrieving the selected store data
 $query1 = "SELECT * from stores where id = '$storeId'";
 $result1 = mysqli_query($connection, $query1);
 $store = mysqli_fetch_assoc($result1);
+
+//getting the mac address of the client side
 $string = exec('getmac');
 $mac = substr($string, 0, 17);
 
+//getting all ratings of the selected store
 $query7 = "SELECT * from rating where store_id = '$storeId'";
 $result7 = mysqli_query($connection, $query7);
-$ratings = [];
-$macs = [];
-$isRatedfinal = false;
+$ratings = []; //holds ratings
+$macs = []; //holds mac address of the client
+$isRatedfinal = false; //checking if the client has rated this store or not
 
 if (mysqli_num_rows($result7) > 0) {
+    //retrieving the ratings info in the two arrays
     while ($rating = mysqli_fetch_assoc($result7)) {
         $ratings[] = $rating['rate'];
         $macs[] = $rating['macAdd'];
     }
 };
 
+//no of raters.
 $total = count($ratings);
+//summation of the ratings
 $sum = array_sum($ratings) ?? 0;
 
 if ($total == 0) {
@@ -36,12 +45,15 @@ if ($total == 0) {
 <!DOCTYPE html>
 <html lang="en">
 <?php
+//head
 include_once "partial/head.php";
 ?>
 
 <body>
     <?php
+    //header
     include_once "partial/header.php";
+    //navbav
     include_once "partial/nav.php";
     ?>
 
@@ -53,21 +65,21 @@ include_once "partial/head.php";
         <div class="container">
             <!-- row -->
             <div class="row">
-                <!-- Product main img -->
+                <!-- store main img -->
                 <div class="col-md-5 col-md-push-1">
                     <div id="product-main-img">
                         <div class="product-preview">
                             <?php
-                            echo '<img src="http://localhost/iug1/Final%20Project/Dashboard/uploads/images/'.$store["image"] . '"alt="">';
+                            echo '<img src="http://localhost/iug1/Final%20Project/Dashboard/uploads/images/' . $store["image"] . '"alt="">';
                             ?>
                         </div>
                     </div>
                 </div>
-                <!-- /Product main img -->
+                <!-- /store main img -->
 
 
 
-                <!-- Product details -->
+                <!-- store details -->
                 <div style="margin-left: 10%;" class="col-md-5">
                     <div class="product-details" style="margin-top: 30%;">
                         <h2 class="product-name"><?php echo $store['name'] ?></h2>
@@ -97,7 +109,9 @@ include_once "partial/head.php";
                         <ul class="product-links">
                             <li>Category:</li>
                             <?php
+                            //database connection
                             include_once "../Dashboard/partial/DB_CONNECTION.php";
+                            //selecting the category of the store
                             $query1 = "SELECT * from categories where id=" . $store['category_id'];
                             $result1 = mysqli_query($connection, $query1);
                             $row1 = mysqli_fetch_assoc($result1);
@@ -112,19 +126,19 @@ include_once "partial/head.php";
 
                     </div>
                 </div>
-                <!-- /Product details -->
+                <!-- /store details -->
 
-                <!-- Product tab -->
+                <!-- store tab -->
                 <div class="col-md-12">
                     <div id="product-tab">
-                        <!-- product tab nav -->
+                        <!-- store tab nav -->
                         <ul class="tab-nav">
                             <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
                             <li><a data-toggle="tab" href="#tab3">Reviews <?php echo $total ?></a></li>
                         </ul>
-                        <!-- /product tab nav -->
+                        <!-- /store tab nav -->
 
-                        <!-- product tab content -->
+                        <!-- store tab content -->
                         <div class="tab-content">
                             <!-- tab1  -->
                             <div id="tab1" class="tab-pane fade in active">
@@ -145,6 +159,7 @@ include_once "partial/head.php";
                                     <div class="col-md-3" style="margin: 0% 5%;">
                                         <div id="rating">
                                             <div class="rating-avg">
+                                                <!-- rating show -->
                                                 <span><?php printf("%.1f", $average)  ?></span>
                                                 <div class="rating-stars">
                                                     <?php
@@ -164,7 +179,7 @@ include_once "partial/head.php";
                                             </div>
                                             <ul class="rating">
                                                 <?php
-
+                                                //showing rating stars as a code
                                                 for ($j = 5; $j > 0; $j--) {
                                                     echo '<li><div class="rating-stars">';
                                                     $all = 5;
@@ -200,6 +215,7 @@ include_once "partial/head.php";
                                     <!-- Review Form -->
                                     <div style="margin: 5% 20%;" class="col-md-3">
                                         <span><?php
+
                                                 if (in_array($mac, $macs)) {
                                                     echo "<strong>You Rated this Store!</strong>";
                                                 }
@@ -210,6 +226,7 @@ include_once "partial/head.php";
                                                 <div class="input-rating">
                                                     <span><b> Rating:</b> </span>
                                                     <div class="stars">
+                                                        <!-- preventing the client who rated this store from rating it again -->
                                                         <input id="star5" name="ratings" value="5" type="radio" <?php
                                                                                                                 if (in_array($mac, $macs)) {
                                                                                                                     echo "disabled";
@@ -252,10 +269,10 @@ include_once "partial/head.php";
                             </div>
                             <!-- /tab3  -->
                         </div>
-                        <!-- /product tab content  -->
+                        <!-- /store tab content  -->
                     </div>
                 </div>
-                <!-- /product tab -->
+                <!-- /store tab -->
             </div>
             <!-- /row -->
         </div>

@@ -1,23 +1,26 @@
 <?php
+//Being sure of signning in
 session_start();
 if (!isset($_SESSION['is_login']) && !$_SESSION['is_login']) {
     header('Location:login.php');
 }
+//database connection
 include 'partial/DB_connection.php';
+//for being sure there are no fails or errors
 $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    //geting the super global variables
     $name = $_POST['name'];
     $phone_number = $_POST['phone_number'];
     $email = $_POST['email'];
     $password = md5($_POST['password']);
     $address = $_POST['address'];
     $description = $_POST['description'];
-
     isset($_POST['active']) ? $active = $_POST['active'] : $active = 0;
 
+    //vlaidation of all regarded fields with its convenient name
     if (empty($_POST["name"])) {
         $errors['name_error'] = "Name is required";
     }
@@ -40,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (count($errors) > 0) {
         $errors['general_error'] = "Please fix all errors";
     } else {
+        //if no failures add into database
         $query = "INSERT INTO admins (name,phone_number,email,password,status,description,address)
     VALUES('$name','$phone_number','$email','$password','$active','$description','$address')";
         $result = mysqli_query($connection, $query);
